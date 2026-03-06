@@ -1,6 +1,7 @@
 ---
 name: typescript-code-review-skill
-description: TypeScript/React向けコードレビュースキル。命名規則、テストコード品質のレビューを実施。TypeScriptコードのレビュー、PRレビューを依頼された際に使用。
+description: TypeScript/React向けコードレビュースキル。命名規則とテストコード品質の2つの観点でレビューを実施。「コードレビューして」「PRレビュー」「命名規則を確認」「テストの品質をチェック」「レビューお願い」などのリクエスト時に使用。
+disable-model-invocation: true
 ---
 
 # TypeScript Code Review Skill

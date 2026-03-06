@@ -1,6 +1,7 @@
 ---
 name: coding-standards
-description: React/TypeScript基本実装ルール。早期return、型定義、不変性、命名規則、エラーハンドリング、非同期処理などのコーディング規約を定義。実装時に参照すべき基本ルールを提供する。
+description: React/TypeScript基本実装ルール。早期return、型定義、不変性、命名規則、エラーハンドリング、非同期処理などのコーディング規約を定義。TypeScriptコードを新規作成・修正する際に参照すること。
+user-invocable: false
 ---
 
 # React/TypeScript基本実装ルール

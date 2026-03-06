@@ -1,6 +1,7 @@
 ---
 name: testing
-description: 単体テストルール。フラット構造、モック使用制限、パラメータ化テスト、テストピラミッドなどの規約を定義。Vitest/Jest使用時に参照。
+description: 単体テストルール。フラット構造（describe不使用）、モック使用制限、パラメータ化テスト、テストピラミッドなどの規約を定義。テストコードを新規作成・修正する際に参照すること。Vitest/Jest対応。
+user-invocable: false
 ---
 
 # 単体テストルール
@@ -86,4 +87,3 @@ __tests__/
 ## 関連スキル
 
 - TDD: `tdd`
-- カスタムフック: `custom-hook`
