@@ -6,8 +6,6 @@ user-invocable: false
 
 # React/TypeScript基本実装ルール
 
-React/TypeScript開発における基本的なコーディング規約を定義するスキル。
-
 ## 基本方針
 
 - 早期returnでネストを浅くする

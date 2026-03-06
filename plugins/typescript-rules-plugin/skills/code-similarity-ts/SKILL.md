@@ -6,8 +6,6 @@ disable-model-invocation: true
 
 # TypeScriptコード重複検出・共通化
 
-similarity-tsを使用してTypeScriptコードの重複を検出し、リファクタリング計画を立てるスキル。
-
 ## ワークフロー
 
 ```
