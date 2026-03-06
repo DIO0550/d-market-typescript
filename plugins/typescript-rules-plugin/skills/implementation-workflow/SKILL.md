@@ -52,9 +52,9 @@ git checkout -b feature/機能名
 ### 5. 品質チェック（必須）
 
 ```bash
-pnpm test        # テスト実行
-pnpm lint        # Lintチェック
-pnpm type-check  # 型チェック
+pnpm run test        # テスト実行
+pnpm run lint        # Lintチェック
+pnpm run type-check  # 型チェック
 ```
 
 **全て通るまでコミット禁止**
@@ -63,7 +63,7 @@ pnpm type-check  # 型チェック
 
 ## 禁止事項
 
-- `npx` の使用禁止（必ず `pnpm` を使用）
+- `npx` / `pnpm dlx` の使用禁止（`pnpm run` を使用）
 - ESLint無効化禁止（`eslint-disable` 系ディレクティブ禁止）
 - mainブランチで直接作業禁止
 
@@ -88,8 +88,8 @@ pnpm type-check  # 型チェック
 - [ ] コーディング規約に従っている（coding-standardsスキル参照）
 
 ## 実装後
-- [ ] `pnpm test` 通過
-- [ ] `pnpm lint` 通過
-- [ ] `pnpm type-check` 通過
+- [ ] `pnpm run test` 通過
+- [ ] `pnpm run lint` 通過
+- [ ] `pnpm run type-check` 通過
 - [ ] コミットルールに従っている
 ```
