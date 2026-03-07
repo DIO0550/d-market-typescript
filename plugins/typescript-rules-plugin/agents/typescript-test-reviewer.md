@@ -74,12 +74,12 @@ color: green
 対象ファイルが指定されている場合、以下のパターンを Grep などでスキャンし、該当があれば「品質ゲート: FAIL」を宣言します。
 
 - 構造違反
-  - /\bdescribe\s*\(/, /\bcontext\s*\(/, /\bsuite\s\*\(/（Jest/Vitest/Mocha 等）
+  - /\bdescribe\s*\(/, /\bcontext\s*\(/, /\bsuite\s*\(/（Jest/Vitest/Mocha 等）
 - 共有状態の疑い
   - /\bbeforeAll\s*\(/, /\bafterAll\s*\(/（ファイル単位の共有状態）
   - ファイル先頭スコープの let/var と複数テストからの更新（要確認）
 - 曖昧なテスト名
-  - /(正常系|異常系|成功|失敗|works|should\s+work|does\s+something|handles|case\s\*\d+|テスト|確認|チェック)/i
+  - /(正常系|異常系|成功|失敗|works|should\s+work|does\s+something|handles|case\s*\d+|テスト|確認|チェック)/i
 - 時間・ランダム依存の固定なし
   - /Date\.now\(|new\s+Date\(/, /Math\.random\(/, /setTimeout\(|setInterval\(/（固定化・モックなし）
 - AAA 不明瞭
@@ -103,7 +103,7 @@ color: green
   - ネストされたスイート構造（多段のグループ化）
 - テスト名の曖昧さ（以下のいずれかに一致）
   - 正規表現例:
-    - /(正常系|異常系|成功|失敗|works|should\s+work|does\s+something|handles|case\s\*\d+|テスト|確認|チェック)/i
+    - /(正常系|異常系|成功|失敗|works|should\s+work|does\s+something|handles|case\s*\d+|テスト|確認|チェック)/i
   - 期待結果・条件・対象が特定できないタイトル
 - 共有状態の疑い
   - beforeAll/afterAll の使用
@@ -136,7 +136,7 @@ color: green
 ````
 ## テストコードレビュー結果
 
-### � レビュー対象
+### 📋 レビュー対象
 - ファイル数: X件
 - テストケース数: Y件
 - フレームワーク: [Jest/Vitest/Pytest等]
@@ -159,15 +159,12 @@ color: green
 **ファイル**: `[filename]`
 **問題点**: [具体的な問題の説明]
 **現在のコード**:
-```[language]
-[問題のあるコード例]
-````
+
+    [問題のあるコード例]
 
 **改善案**:
 
-```[language]
-[改善後のコード例]
-```
+    [改善後のコード例]
 
 **推奨アクション**: [具体的な改善手順]
 

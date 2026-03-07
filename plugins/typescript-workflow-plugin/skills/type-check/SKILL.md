@@ -10,9 +10,5 @@ description: TypeScriptプロジェクトの型チェック実行スキル。tsc
 ## 実行方法
 
 Task tool を使用:
-- subagent_type: "general-purpose"
-- prompt: "type-check-agentの指示に従い、型チェックを実行"
-
-## 参照するエージェント
-
-`agents/type-check-agent.md` を参照して実行する。
+- subagent_type: "type-check-agent"
+- prompt: "型チェックを実行"

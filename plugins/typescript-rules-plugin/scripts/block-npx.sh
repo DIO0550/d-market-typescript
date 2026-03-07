@@ -1,7 +1,7 @@
 #!/bin/bash
 COMMAND=$(cat | jq -r '.tool_input.command')
 
-if echo "$COMMAND" | grep -qE '(^|[;&|]\s*)(npx|pnpm dlx)\b'; then
+if echo "$COMMAND" | grep -qE '(^|\s|[;&|])\s*(npx|pnpm dlx)\b'; then
   jq -n '{
     hookSpecificOutput: {
       hookEventName: "PreToolUse",

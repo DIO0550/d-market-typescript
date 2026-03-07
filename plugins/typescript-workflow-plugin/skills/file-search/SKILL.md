@@ -36,13 +36,11 @@ description: TypeScriptプロジェクトのファイル検索スキル。ファ
 
 ```
 Task tool:
-  subagent_type: "Explore"
+  subagent_type: "file-search-agent"
   prompt: |
-    TypeScriptファイル検索エージェントとして、以下の検索を実行してください。
+    以下の検索を実行してください。
 
     検索対象: {検索したい内容}
-
-    `agents/file-search-agent.md` の指示に従い、結果を整理して報告してください。
 ```
 
 ### 検索リクエストの例

@@ -11,7 +11,7 @@ user-invocable: false
 - **網羅テスト**: 正常系・異常系・境界値のテストケースを作成
 - **振る舞いのテスト**: 実装詳細ではなく振る舞いを確認
 - **モックは最小限**: 基本はモックを使用しない
-- **フラット構造**: describeブロックの過度な使用を避ける
+- **フラット構造**: describeブロックは使用しない。グループ化はファイル分割で行う
 - **テストケース名**: 日本語で記述
 - **パラメータ化**: `test.each` を活用
 
@@ -66,11 +66,38 @@ test.each([
 
 ## ディレクトリ構成
 
+テストファイルの配置は以下のいずれか（プロジェクトに合わせて選択）：
+
+### ファイル命名規則
+
+```
+{テスト対象名}.{カテゴリ}.test.ts
+```
+
+- カテゴリでグループを分割する（describe の代わり）
+- カテゴリ例: `validation`, `error`, `boundary`, `integration` など
+
+### コロケーション（テスト対象と同一フォルダ）
+
+```
+src/
+├── user-login.ts
+├── user-login.validation.test.ts
+├── user-login.error.test.ts
+├── user-registration.ts
+├── user-registration.test.ts
+└── helpers/
+    ├── user-utils.ts
+    └── user-utils.test.ts
+```
+
+### __tests__ ディレクトリ
+
 ```
 __tests__/
-├── user-login.test.ts
+├── user-login.validation.test.ts
+├── user-login.error.test.ts
 ├── user-registration.test.ts
-├── user-profile.test.ts
 └── helpers/
     └── user-test-utils.ts
 ```

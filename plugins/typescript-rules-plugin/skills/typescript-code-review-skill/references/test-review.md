@@ -23,7 +23,7 @@
 ### テスト構造と命名
 
 - [ ] テスト名が「何を」「どういう条件で」「どうなるか」を表現しているか
-- [ ] describe/context のネストが適切で、テストの分類が明確か
+- [ ] describe/context を使用せずフラット構造になっているか
 - [ ] AAA パターン(Arrange/Act/Assert)が明確に分離されているか
 - [ ] 1 つのテストで複数のアサーションをしすぎていないか
 
@@ -197,7 +197,7 @@ expect(result.isValid).toBe(true);
 
 ### フレームワーク固有の観点
 
-- **Jest**: `describe.each` や `test.each` の活用でテストケースを効率化
+- **Jest**: `test.each` の活用でテストケースを効率化
 - **React Testing Library**: ユーザー視点でのテスト(getByRole 等の使用)
 - **Cypress/Playwright**: Page Object パターンの適用
 

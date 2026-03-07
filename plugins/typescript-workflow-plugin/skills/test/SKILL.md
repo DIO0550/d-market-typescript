@@ -10,9 +10,5 @@ description: TypeScriptプロジェクトのテスト実行スキル。ユニッ
 ## 実行方法
 
 Task tool を使用:
-- subagent_type: "general-purpose"
-- prompt: "test-agentの指示に従い、テストを実行"
-
-## 参照するエージェント
-
-`agents/test-agent.md` を参照して実行する。
+- subagent_type: "test-agent"
+- prompt: "テストを実行"
