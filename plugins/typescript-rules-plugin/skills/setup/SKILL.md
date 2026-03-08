@@ -1,6 +1,6 @@
 ---
-name: setup
-description: TypeScript/Reactプロジェクトの指示ファイル（CLAUDE.md、.cursorrules等）にd-marketスキル活用ガイドを追加するセットアップスキル。プラグインのインストール後やプロジェクト初期設定時に使用。
+name: rules-setup
+description: TypeScript/Reactプロジェクトの指示ファイル（CLAUDE.md、.cursorrules等）にd-marketルール系スキル活用ガイドを追加するセットアップスキル。`setup` 名衝突を避けるため rules-setup として利用。
 disable-model-invocation: true
 ---
 
