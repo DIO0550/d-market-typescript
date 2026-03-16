@@ -14,6 +14,7 @@ user-invocable: false
 - **フラット構造**: describeブロックは使用しない。グループ化はファイル分割で行う
 - **テストケース名**: 日本語で記述
 - **パラメータ化**: `test.each` を活用
+- **条件分岐禁止**: テストコード内で `if`/`else`/`switch` を使用しない。分岐が必要な場合は `test.each` またはテストケースの分割で対応
 
 ## テスト構造（フラット原則）
 
@@ -27,6 +28,34 @@ test("有効な認証情報でログインするとトークンが返る", () =>
 test("無効なメールではValidationErrorが発生する", () => {
   expect(() => login({ email: "invalid", password: "valid" }))
     .toThrow(ValidationError);
+});
+```
+
+## 条件分岐の禁止
+
+```typescript
+// ❌ 悪い例: if で分岐するテスト
+test("数値を分類する", () => {
+  const values = [0, 1, -1];
+  for (const v of values) {
+    const result = classify(v);
+    if (v === 0) {
+      expect(result).toBe("zero");
+    } else if (v > 0) {
+      expect(result).toBe("positive");
+    } else {
+      expect(result).toBe("negative");
+    }
+  }
+});
+
+// ✅ 良い例: test.each で分割
+test.each([
+  [0, "zero"],
+  [1, "positive"],
+  [-1, "negative"],
+])("classify(%i) は %s を返す", (value, expected) => {
+  expect(classify(value)).toBe(expected);
 });
 ```
 
