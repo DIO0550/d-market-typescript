@@ -100,9 +100,10 @@ test.each([
 ### ファイル命名規則
 
 ```
-{テスト対象名}.{カテゴリ}.test.ts
+{テスト対象のファイル名(拡張子なし)}.{カテゴリ}.test.ts|tsx
 ```
 
+- テスト対象のファイル名をそのまま使う（例: `user-login.ts` → `user-login.validation.test.ts`）
 - カテゴリでグループを分割する（describe の代わり）
 - カテゴリ例: `validation`, `error`, `boundary`, `integration` など
 
