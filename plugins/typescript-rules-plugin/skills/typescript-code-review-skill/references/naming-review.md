@@ -8,7 +8,8 @@
 
 - **PascalCase**: クラス、インターフェース、型エイリアス、enum、namespace
 - **camelCase**: 変数、関数、メソッド、パラメータ、プロパティ
-- **UPPER_SNAKE_CASE**: 定数、環境変数
+- **PascalCase**: 定数（例: `MaxRetryCount`, `DefaultTimeout`）
+- **UPPER_SNAKE_CASE**: 環境変数
 - **kebab-case**: ファイル名（オプション）
 
 ### 型・インターフェース
@@ -41,7 +42,7 @@
 ```markdown
 □ クラス・型が PascalCase か
 □ 変数・関数が camelCase か
-□ 定数が UPPER_SNAKE_CASE か
+□ 定数が PascalCase か（環境変数は UPPER_SNAKE_CASE）
 □ boolean 変数が適切なプレフィックスを持つか
 □ 配列が複数形か
 □ 名前が意図を明確に表しているか

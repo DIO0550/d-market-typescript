@@ -169,7 +169,7 @@ expect(result.isValid).toBe(true);
 
 ```
 🟢 テストデータが不明確: マジックナンバーや意味不明な値を名前付き定数に置き換えることを推奨
-例: `const VALID_AGE = 20; // 成人年齢`
+例: `const ValidAge = 20; // 成人年齢`
 ```
 
 ## 重要度分類
