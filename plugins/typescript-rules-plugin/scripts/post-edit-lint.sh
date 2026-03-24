@@ -14,11 +14,13 @@ esac
 # ファイルが存在しなければスキップ（削除の場合など）
 [ -f "$file" ] || exit 0
 
-# --- 最寄りの package.json を探索 ---
-find_nearest_package_json() {
-  local dir="$1"
+# --- 指定した dep を持つ最寄りの package.json を探索 ---
+# monorepo でサブパッケージに dep が無い場合、ルートまで遡る
+find_dep_root() {
+  local dep="$1" dir="$2"
   while [ "$dir" != "/" ]; do
-    if [ -f "$dir/package.json" ]; then
+    if [ -f "$dir/package.json" ] && \
+       jq -e --arg name "$dep" '(.dependencies[$name] // .devDependencies[$name]) != null' "$dir/package.json" >/dev/null 2>&1; then
       echo "$dir"
       return 0
     fi
@@ -27,28 +29,20 @@ find_nearest_package_json() {
   return 1
 }
 
-project_root="$(find_nearest_package_json "$(dirname "$file")")" || exit 0
-pkg="$project_root/package.json"
-
-# --- package.json からリンターの有無を判定 ---
-has_dep() {
-  jq -e --arg name "$1" '
-    (.dependencies[$name] // .devDependencies[$name]) != null
-  ' "$pkg" >/dev/null 2>&1
-}
-
-# pnpm exec をプロジェクトルートで実行
-run_tool() {
-  (cd "$project_root" && pnpm exec "$@")
+# dep のあるルートから pnpm exec を実行
+run_lint() {
+  local root="$1"; shift
+  (cd "$root" && pnpm exec "$@")
 }
 
 diag=""
 ran_lint=false
+start_dir="$(dirname "$file")"
 
 # --- oxlint (ESLint より高速な代替。両方あれば oxlint を優先) ---
-if has_dep "oxlint"; then
-  run_tool oxlint --fix "$file" >/dev/null 2>&1 || true
-  result="$(run_tool oxlint "$file" 2>&1 | head -30)" || true
+if oxlint_root="$(find_dep_root "oxlint" "$start_dir")"; then
+  run_lint "$oxlint_root" oxlint --fix "$file" >/dev/null 2>&1 || true
+  result="$(run_lint "$oxlint_root" oxlint "$file" 2>&1 | head -30)" || true
   if [ -n "$result" ]; then
     diag="${diag}[oxlint]
 ${result}
@@ -59,21 +53,23 @@ ${result}
 fi
 
 # --- ESLint (oxlint が無い場合のフォールバック) ---
-if [ "$ran_lint" = false ] && has_dep "eslint"; then
-  run_tool eslint --fix "$file" >/dev/null 2>&1 || true
-  result="$(run_tool eslint "$file" 2>&1 | head -30)" || true
-  if [ -n "$result" ]; then
-    diag="${diag}[eslint]
+if [ "$ran_lint" = false ]; then
+  if eslint_root="$(find_dep_root "eslint" "$start_dir")"; then
+    run_lint "$eslint_root" eslint --fix "$file" >/dev/null 2>&1 || true
+    result="$(run_lint "$eslint_root" eslint "$file" 2>&1 | head -30)" || true
+    if [ -n "$result" ]; then
+      diag="${diag}[eslint]
 ${result}
 
 "
+    fi
   fi
 fi
 
 # --- Biome (フォーマッター + リンター) ---
-if has_dep "@biomejs/biome"; then
-  run_tool biome check --fix "$file" >/dev/null 2>&1 || true
-  result="$(run_tool biome check "$file" 2>&1 | head -30)" || true
+if biome_root="$(find_dep_root "@biomejs/biome" "$start_dir")"; then
+  run_lint "$biome_root" biome check --fix "$file" >/dev/null 2>&1 || true
+  result="$(run_lint "$biome_root" biome check "$file" 2>&1 | head -30)" || true
   if [ -n "$result" ]; then
     diag="${diag}[biome]
 ${result}
