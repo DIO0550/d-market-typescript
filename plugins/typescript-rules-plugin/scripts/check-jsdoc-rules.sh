@@ -48,7 +48,8 @@ state==1 {
 
 # --- 関数宣言の検出 ---
 /^[[:space:]]*(export[[:space:]]+(default[[:space:]]+)?)?(async[[:space:]]+)?function[[:space:]]+[a-zA-Z_$]/ ||
-/^[[:space:]]*(export[[:space:]]+)?(const|let)[[:space:]]+[a-zA-Z_$][a-zA-Z0-9_$]*[[:space:]]*=[[:space:]]*(async[[:space:]]*)?\(/ {
+/^[[:space:]]*(export[[:space:]]+)?(const|let)[[:space:]]+[a-zA-Z_$][a-zA-Z0-9_$]*[[:space:]]*=[[:space:]]*(async[[:space:]]*)?\(/ ||
+/^[[:space:]]+[a-zA-Z_$][a-zA-Z0-9_$]*[[:space:]]*:[[:space:]]*(async[[:space:]]*)?\(/ {
 
   # JSDoc が直前にあるか
   if (jdend < NR-1 || jsdoc=="") {
