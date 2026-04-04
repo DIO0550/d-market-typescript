@@ -32,8 +32,23 @@ if ! (cd "$ts_root" && pnpm exec tsc --version >/dev/null 2>&1); then
   exit 0
 fi
 
+# --- tsconfig.json を $PWD から上方向に探索 ---
+find_tsconfig() {
+  local dir="$1" root="$2"
+  while [ "$dir" != "/" ] && [[ "$dir" == "$root"* ]]; do
+    if [ -f "$dir/tsconfig.json" ]; then
+      echo "$dir/tsconfig.json"
+      return 0
+    fi
+    dir="$(dirname "$dir")"
+  done
+  return 1
+}
+
+tsconfig="$(find_tsconfig "$PWD" "$ts_root")" || exit 0
+
 # --- tsc --noEmit 実行 ---
-result="$(cd "$ts_root" && pnpm exec tsc --noEmit 2>&1)" && exit 0
+result="$(cd "$ts_root" && pnpm exec tsc --noEmit --project "$tsconfig" 2>&1)" && exit 0
 
 # 型エラーあり → push をブロックし、エラー内容を AI にフィードバック
 jq -Rn --arg msg "$result" '{
