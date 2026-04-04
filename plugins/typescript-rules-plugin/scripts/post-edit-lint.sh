@@ -7,7 +7,7 @@ file="$(jq -r '.tool_input.file_path // .tool_input.path // empty' <<< "$input")
 
 # 対象拡張子のみ処理
 case "$file" in
-  *.ts|*.tsx|*.js|*.jsx) ;;
+  *.ts|*.tsx|*.js|*.jsx|*.json) ;;
   *) exit 0 ;;
 esac
 
