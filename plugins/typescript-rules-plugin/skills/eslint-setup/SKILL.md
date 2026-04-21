@@ -63,20 +63,31 @@ typescript-eslint
 
 ### 4. 設定ファイルの生成
 
-既存の設定ファイルがある場合はルールを追記、ない場合は flat config (`eslint.config.mjs`) を新規作成する。
+#### 既存の設定ファイルがある場合
 
-生成する設定の基本形:
+既存ファイルにルールを追記する（従来通り）。
+
+#### 新規作成の場合
+
+2つのファイルを生成する。ルール定義を `{プロジェクトルート}/plugin-workspace/linting/eslint-rules.mjs` に配置し、プロジェクトルートにはそこからインポートするプロキシを置く。`plugin-workspace/linting/` ディレクトリがなければ作成する。
+
+**`{プロジェクトルート}/plugin-workspace/linting/eslint-rules.mjs`**（ルール定義 — ソースオブトゥルース）:
+
+```javascript
+export const pluginRules = {
+  // ユーザーが選択したルールをここに記載
+};
+```
+
+**`eslint.config.mjs`**（プロジェクトルート — プロキシ）:
 
 ```javascript
 import tseslint from "typescript-eslint";
+import { pluginRules } from "./plugin-workspace/linting/eslint-rules.mjs";
 
 export default tseslint.config(
   ...tseslint.configs.recommended,
-  {
-    rules: {
-      // ユーザーが選択したルールをここに記載
-    },
-  }
+  { rules: pluginRules },
 );
 ```
 

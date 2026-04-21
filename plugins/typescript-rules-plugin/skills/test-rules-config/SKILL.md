@@ -23,8 +23,9 @@ user-invocable: true
 以下の順序で `.test-rules.yml` の配置先を決定する。
 
 1. ユーザーが引数でパスを指定した場合 → そのパスを使用
-2. 既存の `.test-rules.yml` がプロジェクト内にある場合 → そのファイルを更新
-3. いずれもない場合 → プロジェクトルート（最寄りの `package.json` があるディレクトリ）に新規作成
+2. 既存の `.test-rules.yml` が `{プロジェクトルート}/plugin-workspace/testing/` にある場合 → そのファイルを更新
+3. 既存の `.test-rules.yml` がプロジェクト内にある場合 → そのファイルを更新（後方互換）
+4. いずれもない場合 → `{プロジェクトルート}/plugin-workspace/testing/.test-rules.yml` に新規作成（ディレクトリがなければ作成）
 
 ### 2. 既存設定の確認
 
