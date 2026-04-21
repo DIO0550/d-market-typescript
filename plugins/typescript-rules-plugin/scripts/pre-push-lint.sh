@@ -29,8 +29,7 @@ ran_lint=false
 
 # --- oxlint (ESLint より高速な代替。両方あれば oxlint を優先) ---
 if oxlint_root="$(find_dep_root "oxlint" "$PWD")"; then
-  result="$(cd "$oxlint_root" && pnpm exec oxlint 2>&1)" || true
-  if [ -n "$result" ] && echo "$result" | grep -qE '(error|warning)'; then
+  if ! result="$(cd "$oxlint_root" && pnpm exec oxlint 2>&1)"; then
     diag="${diag}[oxlint]
 ${result}
 
@@ -42,8 +41,7 @@ fi
 # --- ESLint (oxlint が無い場合のフォールバック) ---
 if [ "$ran_lint" = false ]; then
   if eslint_root="$(find_dep_root "eslint" "$PWD")"; then
-    result="$(cd "$eslint_root" && pnpm exec eslint . 2>&1)" || true
-    if [ -n "$result" ] && echo "$result" | grep -qE '(error|warning|problem)'; then
+    if ! result="$(cd "$eslint_root" && pnpm exec eslint . 2>&1)"; then
       diag="${diag}[eslint]
 ${result}
 
