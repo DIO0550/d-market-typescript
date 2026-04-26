@@ -1,14 +1,14 @@
 ---
 name: implementation-workflow
-description: TypeScript実装ワークフロースキル。新機能開発やバグ修正を開始する際のエントリーポイントとして、状況に応じて適切なスキルを参照させる。品質チェック（テスト・lint・型チェック）とブランチ運用を定義。TypeScriptの実装作業を行う際に参照すること。
+description: TypeScript実装ワークフロースキル。新機能開発やバグ修正を開始する際のエントリーポイントとして、状況に応じて適切なスキルをSkillツールで実行させる。品質チェック（テスト・lint・型チェック）とブランチ運用を定義。TypeScriptの実装作業を行う際にSkillツールで実行すること。
 user-invocable: false
 ---
 
 # TypeScript実装ワークフロー
 
-## 関連スキル参照ガイド
+## 関連スキル実行ガイド
 
-| 状況 | 参照スキル |
+| 状況 | Skill ツールで実行するスキル |
 |:-|:-|
 | コーディング中 | `coding-standards` |
 | テスト作成時 | `tdd`, `testing` |
@@ -35,14 +35,14 @@ git checkout -b feature/機能名
 
 ### 3. TDDで実装
 
-→ 詳細は `tdd` スキルを参照
+→ `tdd` スキルを Skill ツールで実行すること
 
 - Red → Green → Refactor のサイクル
 - 先にテストを書いてから実装
 
 ### 4. コーディング規約に従う
 
-→ 詳細は `coding-standards` スキルを参照
+→ `coding-standards` スキルを Skill ツールで実行すること
 
 - 早期return、不変性、単一責任
 - 型定義、命名規則
@@ -84,8 +84,8 @@ pnpm run type-check  # 型チェック
 - [ ] 実装計画を提示し承認を得た
 
 ## 実装中
-- [ ] TDDサイクルを守っている（tddスキル参照）
-- [ ] コーディング規約に従っている（coding-standardsスキル参照）
+- [ ] TDDサイクルを守っている（tddスキルをSkillツールで実行済み）
+- [ ] コーディング規約に従っている（coding-standardsスキルをSkillツールで実行済み）
 
 ## 実装後
 - [ ] `pnpm run test` 通過
