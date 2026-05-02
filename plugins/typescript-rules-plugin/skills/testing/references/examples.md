@@ -55,6 +55,49 @@ test.each([
 });
 ```
 
+## トートロジーテスト・無価値テストの禁止例
+
+```typescript
+// ❌ 悪い例: オブジェクト生成後にプロパティを確認するだけ（言語仕様が保証する）
+test("ユーザーが作成される", () => {
+  const user = createUser({ name: "太郎", age: 20 });
+  expect(user.name).toBe("太郎");
+  expect(user.age).toBe(20);
+});
+
+// ❌ 悪い例: 配列操作の結果を確認するだけ
+test("アイテムが追加される", () => {
+  const items: string[] = [];
+  items.push("apple");
+  expect(items).toHaveLength(1);
+  expect(items[0]).toBe("apple");
+});
+
+// ❌ 悪い例: 定数の値を確認するだけ
+test("デフォルトのタイムアウトが設定されている", () => {
+  expect(DefaultTimeout).toBe(3000);
+});
+
+// ✅ 良い例: ロジック（計算・変換・分岐）の振る舞いをテスト
+test("未成年ユーザーにはアルコール購入権限がない", () => {
+  const user = createUser({ name: "太郎", age: 17 });
+  expect(user.canPurchaseAlcohol()).toBe(false);
+});
+
+// ✅ 良い例: ビジネスルールに基づく変換をテスト
+test("カートの合計が1000円以上で送料が無料になる", () => {
+  const cart = createCart([
+    { name: "商品A", price: 600 },
+    { name: "商品B", price: 500 },
+  ]);
+  expect(cart.shippingFee()).toBe(0);
+});
+```
+
+### 判定基準
+
+テストを書く前に「このテストが失敗したら何のバグが見つかるか？」を自問する。答えが「言語やランタイムの不具合」しかない場合、そのテストは不要。
+
 ## ディレクトリ構成
 
 テストファイルの配置は以下のいずれか（プロジェクトに合わせて選択）。
