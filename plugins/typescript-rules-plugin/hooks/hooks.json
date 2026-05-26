@@ -1,5 +1,5 @@
 {
-  "description": "npx/pnpm dlx の使用禁止 & スキルゲート（ts/tsx編集前にスキル発火必須） & 編集後の自動リントチェック & テストルール検証 & JSDocルール検証 & push前の型チェック & push前の全体lint/JSDoc/テストルール検証",
+  "description": "npx/pnpm dlx の使用禁止 & スキルゲート（ts/tsx編集前にスキル発火必須） & lint抑制コメント禁止 & 編集後の自動リントチェック & テストルール検証 & JSDocルール検証 & push前の型チェック & push前の全体lint/JSDoc/テストルール検証",
   "hooks": {
     "PreToolUse": [
       {
@@ -33,6 +33,10 @@
           {
             "type": "command",
             "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/require-skill-before-edit.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/block-lint-suppress.sh"
           }
         ]
       }
