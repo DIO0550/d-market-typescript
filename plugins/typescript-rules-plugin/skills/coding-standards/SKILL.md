@@ -1,6 +1,6 @@
 ---
 name: coding-standards
-description: React/TypeScript基本実装ルール。早期return、型定義、不変性、命名規則、エラーハンドリング、非同期処理などのコーディング規約を定義。TypeScriptコードを新規作成・修正する際にSkillツールで実行すること。
+description: React/TypeScript基本実装ルール。早期return、型定義（アサーション制限・satisfies・判別可能union）、null/undefined、モジュール設計（import type・named export・循環依存）、不変性、命名規則、エラーハンドリング、非同期処理（floating promise・AbortController）、tsconfig推奨設定などのコーディング規約を定義。TypeScriptコードを新規作成・修正する際にSkillツールで実行すること。
 user-invocable: false
 ---
 
@@ -27,9 +27,29 @@ user-invocable: false
 ## TypeScriptの原則
 
 - `any` は原則禁止（必要な場合も局所化し `unknown` からの絞り込み） — 型安全性が崩壊し、バグがランタイムまで検出できなくなる
+- 非nullアサーション `!` は禁止 — 実行時の保証がなく `undefined` 参照エラーの温床。type guardやoptional chainingで絞り込む
+- 型アサーション `as` は最終手段とし、`as unknown as T` の二重アサーションは禁止 — `as` は型チェックを黙らせるだけで実際の値は変わらず、嘘の型がランタイムまで検出されない
+- 制約チェックと型推論を両立したい場面では `satisfies` を使う — 型注釈は推論結果をwidenし `as` は検査を消すが、`satisfies` は制約を検証しつつリテラル型の推論を保持できる（設定オブジェクトやRecordリテラルに最適）
 - 返り値の型は基本的に明示 — 意図と実装の乖離をコンパイル時に検出できる
 - 列挙は `union type` を優先 — enumは実行時コードを生成しtree-shakingに不利。union typeの方がTypeScriptの型推論と相性がよい
-- 定数は `as const` を活用
+- 定数は `as const` を活用し、`typeof` + `keyof` でunion型を導出する — 値と型の二重管理を避け、定数追加時に型が自動で追従する
+- 状態は複数のbooleanではなく判別可能union（discriminated union）で表現 — `isLoading && error && data` のような不正な組み合わせを型レベルで排除でき、分岐でnarrowingが効く
+- ジェネリクスは型パラメータが2箇所以上で関連する場合のみ使う — 1箇所にしか現れない型パラメータは複雑さに見合う価値がない
+
+## null / undefined と等価比較
+
+- 比較は `===` / `!==` のみ（`==` / `!=` 禁止） — 暗黙の型変換による意図しない一致を防ぐ
+- フォールバックは `||` ではなく `??` を使う — `||` は `0` や `''` などのfalsy値まで上書きするバグを生む
+- ネストしたプロパティアクセスは `?.` を使い、手書きの `x && x.y` チェーンを避ける
+- 「値が存在しない」は `undefined` に寄せる — `null` を返す外部APIは境界で正規化し、コード内で両方をチェックする負担をなくす
+
+## モジュール設計
+
+- 型のみのimport/exportは `import type` / `export type` を明示 — バンドラー・トランスパイラが型を安全に削除でき、意図しない実行時依存を防ぐ
+- default exportよりnamed exportを優先 — リネーム耐性・IDE補完・re-exportの一貫性で有利
+- barrel file（index.tsでの再エクスポート集約）を乱用しない — tree-shakingを阻害し、循環依存とビルド遅延の主要因になる
+- モジュール間の循環依存は禁止 — 読み込み順序に依存した `undefined` バグを生む
+- `namespace` は使用しない — ESモジュールで代替する
 
 ## コメントルール
 
@@ -42,15 +62,32 @@ user-invocable: false
 - 入力境界でバリデーションと正規化を行う
 - バリデーション実装はライブラリ非依存とする（zod が無い場合は type guard / schema 関数で対応）
 - 例外の握り潰しを避ける
+- throwするのは `Error` インスタンスのみ（文字列や生オブジェクトのthrow禁止） — スタックトレースが失われ、原因追跡が不可能になる
+- カスタムエラーは `Error` を継承して `name` を設定し、ラップ時は `cause` オプションで元エラーを保持する — エラーの発生源チェーンを失わずに文脈を追加できる
+- catch変数は `unknown` として扱い、`instanceof Error` 等で絞り込んでから使う — `(e as Error).message` は嘘の型になり得る
 - ユーザー向けメッセージと開発者向けログを分ける
+
+## 不変性の実装
+
+- 関数が変更しない配列・オブジェクト引数は `readonly T[]` / `Readonly<T>` で受ける — 「呼び出し側のデータを変更しない」契約を型で表明できる
+- ディープコピーは `structuredClone` を使う — スプレッド構文はshallowコピーであり、`JSON.parse(JSON.stringify())` はDate/Map/undefinedを壊す
 
 ## 非同期処理
 
 - `async/await` を優先
+- Promiseの放置（floating promise）は禁止 — 失敗が握り潰され、unhandled rejectionでプロセスが落ちる。意図的に待たない場合は `void` 演算子を付けて意図を明示し、エラー処理は内部で完結させる
+- 互いに独立した非同期処理を逐次 `await` しない — `Promise.all` で並列化する。部分失敗を許容して全結果が必要な場合は `Promise.allSettled` を使う
 - 原則 `try/catch` は使わない（関数内での乱用を禁止） — 例外は型で表現されず、呼び出し側がハンドリング漏れに気づけない
 - 想定可能な失敗は例外で投げず、戻り値で失敗可能性を表現する（例: `Result<T, E>` / `Either` / 判別可能union） — 型システムがハンドリング漏れを検出できる
 - 例外的に許可: 想定不可能な障害やインフラ例外を I/O境界・外部API境界・ジョブ実行境界など最上位層で集約する場合のみ — この層でのみcatchすることでアプリケーションの異常終了を防ぎつつ、ログや通知で障害を可視化する
 - タイムアウト・リトライ・キャンセルのポリシーを決める
+- キャンセルは `AbortController` に統一する — タイムアウトは `AbortSignal.timeout(ms)`、複数条件の合成は `AbortSignal.any()` で表現できる
+
+## tsconfig の推奨設定
+
+- `strict: true` を必須とする（全strict系フラグの出発点）
+- `noUncheckedIndexedAccess` を有効化 — 配列・indexアクセスが `T | undefined` になり、範囲外アクセスをコンパイル時に可視化できる（strictには含まれない）
+- `verbatimModuleSyntax` を有効化 — import/exportの消去規則が予測可能になり、型importの明示（`import type`）を強制できる
 
 ## React向け補足
 
