@@ -1,6 +1,6 @@
 ---
 name: coding-standards
-description: React/TypeScript基本実装ルール。早期return、型定義（アサーション制限・satisfies・判別可能union）、null/undefined、モジュール設計（import type・named export・循環依存）、不変性、命名規則、エラーハンドリング、非同期処理（floating promise・AbortController）、tsconfig推奨設定などのコーディング規約を定義。TypeScriptコードを新規作成・修正する際にSkillツールで実行すること。
+description: React/TypeScript基本実装ルール。早期return、型定義（アサーション制限・satisfies・判別可能union）、null/undefined、モジュール設計（import type・named export・循環依存）、不変性、命名規則、エラーハンドリング、非同期処理（floating promise・AbortController）などのコーディング規約を定義。TypeScriptコードを新規作成・修正する際にSkillツールで実行すること。
 user-invocable: false
 ---
 
@@ -84,12 +84,6 @@ user-invocable: false
 - 例外的に許可: 想定不可能な障害やインフラ例外を I/O境界・外部API境界・ジョブ実行境界など最上位層で集約する場合のみ — この層でのみcatchすることでアプリケーションの異常終了を防ぎつつ、ログや通知で障害を可視化する
 - タイムアウト・リトライ・キャンセルのポリシーを決める
 - キャンセルは `AbortController` に統一する — タイムアウトは `AbortSignal.timeout(ms)`、複数条件の合成は `AbortSignal.any()` で表現できる
-
-## tsconfig の推奨設定
-
-- `strict: true` を必須とする（全strict系フラグの出発点）
-- `noUncheckedIndexedAccess` を有効化 — 配列・indexアクセスが `T | undefined` になり、範囲外アクセスをコンパイル時に可視化できる（strictには含まれない）
-- `verbatimModuleSyntax` を有効化 — import/exportの消去規則が予測可能になり、型importの明示（`import type`）を強制できる
 
 ## React向け補足
 
