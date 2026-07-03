@@ -34,6 +34,8 @@ user-invocable: false
 - 列挙は `union type` を優先 — enumは実行時コードを生成しtree-shakingに不利。union typeの方がTypeScriptの型推論と相性がよい
 - 定数は `as const` を活用し、`typeof` + `keyof` でunion型を導出する — 値と型の二重管理を避け、定数追加時に型が自動で追従する
 - 状態は複数のbooleanではなく判別可能union（discriminated union）で表現 — `isLoading && error && data` のような不正な組み合わせを型レベルで排除でき、分岐でnarrowingが効く
+- union分岐のswitchは網羅性チェックを入れる（defaultで `never` への代入、または `satisfies never`） — unionにケースを追加したとき、対応漏れの分岐がコンパイルエラーで検出される
+- 型エラーの抑制は原則禁止。やむを得ない場合は `@ts-ignore` ではなく `@ts-expect-error` + 理由コメント — `@ts-expect-error` はエラーが解消されると自動で警告されるため、不要になった抑制が残り続けない
 - ジェネリクスは型パラメータが2箇所以上で関連する場合のみ使う — 1箇所にしか現れない型パラメータは複雑さに見合う価値がない
 
 ## null / undefined と等価比較
