@@ -1,6 +1,6 @@
 ---
 name: typescript-code-review-skill
-description: TypeScript/React向けコードレビュースキル。命名規則とテストコード品質の2つの観点でレビューを実施。「コードレビューして」「PRレビュー」「命名規則を確認」「テストの品質をチェック」「レビューお願い」などのリクエスト時に使用。
+description: TypeScript/React向けコードレビュースキル。命名規則・テストコード品質・コメント意図/防御的コードの3つの観点でレビューを実施。「コードレビューして」「PRレビュー」「命名規則を確認」「テストの品質をチェック」「コメントを確認」「エラー処理を確認」「レビューお願い」などのリクエスト時に使用。
 disable-model-invocation: true
 ---
 
@@ -14,6 +14,7 @@ TypeScript/Reactプロジェクト向けのコードレビューを実施する�
 |------|------|------|
 | 命名規則 | TypeScript命名規則の準拠 | [naming-review.md](references/naming-review.md) |
 | テストコード | FIRST原則、AAA、網羅性の確認 | [test-review.md](references/test-review.md) |
+| コメント意図・防御的コード | Why-not/局所的Whyコメントの確認、不要なフォールバック・「念のため」の防御的コードの検出 | [intent-comment-review.md](references/intent-comment-review.md) |
 
 ## レビュー対象の決定
 
@@ -26,8 +27,8 @@ TypeScript/Reactプロジェクト向けのコードレビューを実施する�
 1. レビュー対象のコードを特定する
 2. コードの種類に応じて該当するreferenceを読み込む
    - `.test.ts` / `.test.tsx` を含む → [test-review.md](references/test-review.md) を読む
-   - それ以外 → [naming-review.md](references/naming-review.md) を読む
-   - 両方含む場合は両方読む
+   - それ以外 → [naming-review.md](references/naming-review.md) と [intent-comment-review.md](references/intent-comment-review.md) を読む
+   - 両方含む場合はすべて読む
 3. 各referenceの出力形式に従ってレビュー結果を出力
 4. 全観点のサマリーを報告
 
