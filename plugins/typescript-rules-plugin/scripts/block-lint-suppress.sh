@@ -10,10 +10,10 @@ case "$file" in
 esac
 
 case "$file" in
-  */plugin-workspace/*|*/.claude/*|*/plugins/*|*/node_modules/*) exit 0 ;;
+  */.plugin-workspace/*|*/.claude/*|*/plugins/*|*/node_modules/*) exit 0 ;;
 esac
 case "$file" in
-  plugin-workspace/*|.claude/*|plugins/*|node_modules/*) exit 0 ;;
+  .plugin-workspace/*|.claude/*|plugins/*|node_modules/*) exit 0 ;;
 esac
 
 if [ -f "$file" ] && grep -qm1 '@lint-suppress-ok' "$file" 2>/dev/null; then

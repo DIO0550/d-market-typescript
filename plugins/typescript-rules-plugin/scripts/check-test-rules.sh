@@ -17,8 +17,8 @@ esac
 # プロジェクトレベル: 最寄りの .test-rules.yml を探索
 find_config() {
   local dir="$1"
-  if [ -n "${CLAUDE_PROJECT_DIR:-}" ] && [ -f "$CLAUDE_PROJECT_DIR/plugin-workspace/testing/.test-rules.yml" ]; then
-    echo "$CLAUDE_PROJECT_DIR/plugin-workspace/testing/.test-rules.yml"
+  if [ -n "${CLAUDE_PROJECT_DIR:-}" ] && [ -f "$CLAUDE_PROJECT_DIR/.plugin-workspace/testing/.test-rules.yml" ]; then
+    echo "$CLAUDE_PROJECT_DIR/.plugin-workspace/testing/.test-rules.yml"
     return 0
   fi
   while [ "$dir" != "/" ]; do

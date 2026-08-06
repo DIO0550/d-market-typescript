@@ -69,9 +69,9 @@ typescript-eslint
 
 #### 新規作成の場合
 
-2つのファイルを生成する。ルール定義を `{プロジェクトルート}/plugin-workspace/linting/eslint-rules.mjs` に配置し、プロジェクトルートにはそこからインポートするプロキシを置く。`plugin-workspace/linting/` ディレクトリがなければ作成する。
+2つのファイルを生成する。ルール定義を `{プロジェクトルート}/.plugin-workspace/linting/eslint-rules.mjs` に配置し、プロジェクトルートにはそこからインポートするプロキシを置く。`.plugin-workspace/linting/` ディレクトリがなければ作成する。
 
-**`{プロジェクトルート}/plugin-workspace/linting/eslint-rules.mjs`**（ルール定義 — ソースオブトゥルース）:
+**`{プロジェクトルート}/.plugin-workspace/linting/eslint-rules.mjs`**（ルール定義 — ソースオブトゥルース）:
 
 ```javascript
 export const pluginRules = {
@@ -83,7 +83,7 @@ export const pluginRules = {
 
 ```javascript
 import tseslint from "typescript-eslint";
-import { pluginRules } from "./plugin-workspace/linting/eslint-rules.mjs";
+import { pluginRules } from "./.plugin-workspace/linting/eslint-rules.mjs";
 
 export default tseslint.config(
   ...tseslint.configs.recommended,
