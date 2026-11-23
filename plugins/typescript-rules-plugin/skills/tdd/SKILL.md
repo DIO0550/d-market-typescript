@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: TDD（テスト駆動開発）ルール。t-wada式のRed-Green-Refactorサイクル、三角測量、ベイビーステップなどの手法を定義。テストファーストで開発する際や新しいロジックを追加する際にSkillツールで実行すること。
+description: TypeScript向けTDD（テスト駆動開発）ルール。t-wada式のRed-Green-Refactorサイクル、三角測量、ベイビーステップなどの手法を定義。TypeScriptでテストファースト開発する際や新しいロジックを追加する際にSkillツールで実行すること。
 user-invocable: false
 ---
 
